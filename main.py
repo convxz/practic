@@ -15,7 +15,7 @@ class Game:
 
     def __init__(self, count_cards, values) -> None:
         self.count_cards = count_cards
-        self.values = values
+        self.values = values    
         self._game_process(count_cards, values)
     
     def _game_process(self, count_cards, values):
@@ -24,8 +24,6 @@ class Game:
         for lst in permutations_list:
             sum1 = sum([lst[i] for i in range(0, count_cards, 2)]) 
             sum2 = sum([lst[i] for i in range(1, count_cards, 2)])
-            print(sum1)
-            print(sum2)
             if sum1 % 3 == 0:
                 break
         self.sum1, self.sum2 = sum1, sum2
