@@ -10,16 +10,24 @@ def listsum(numList):
 
 
 def choose_nums(numbers):
-    nums = []
     len_nums = ceil(len(numbers) / 2)
+    nums = numbers[:len_nums]
+    other_nums = numbers[len_nums:]
 
-    all_permutations = combinations(numbers, len_nums)
-    for lst in all_permutations:
-        if listsum(lst) % 3 == 0:
-            break
+    if listsum(nums) % 3 == 0:
+        return nums
+    remainder = listsum(nums) % 3
+    for i in range(len_nums):
+        for el in other_nums:
+            if el == nums[i] + (3 - remainder) or el == nums[i] - remainder: 
+                nums[i] = el
+                if listsum(nums) % 3 == 0:
+                    return nums
+                nums = numbers[:len_nums]
+    return nums
 
 
 if __name__ == "__main__":
     nums = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-    print(len(nums))
+    # nums = [-5, -5, -5]
     print(choose_nums(nums))
