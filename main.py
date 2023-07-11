@@ -1,13 +1,10 @@
-from math import ceil
-
-
 def open_tests(filename):
     with open(filename, "r") as file:
         text = file.read().split("\n")
         while "" in text:
             text.remove("")
         return text
-                
+           
 
 def listsum(numList):
    if len(numList) == 1:
@@ -17,7 +14,7 @@ def listsum(numList):
 
 
 def choose_nums(numbers):
-    len_nums = ceil(len(numbers) / 2)
+    len_nums = len(numbers) // 2 + len(numbers) %   2
     nums = numbers[:len_nums]
     other_nums = numbers[len_nums:]
 
@@ -42,7 +39,6 @@ def winner(sum1: int, sum2: int) -> str:
     if sum2 % 3 == 0:
         return "SECOND"
     return "DRAW"
-
 
 
 if __name__ == "__main__":

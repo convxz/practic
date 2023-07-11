@@ -1,33 +1,61 @@
-from math import ceil, factorial
-from itertools import combinations
+def max_score(N, M, field):
+    dp = [[[-1, -1] for _ in range(M)] for _ in range(N)]
 
+    # Инициализация dp[i][j][0]
+    for i in range(N):
+        for j in range(M):
+            if field[i][j] == '0':
+                dp[i][j][0] = 0
+            elif field[i][j] == 'A':
+                if i > 0:
+                    dp[i][j][0] = 1 + dp[i-1][j][0]
+                else:
+                    dp[i][j][0] = 1
+            elif field[i][j] == 'B':
+                if i > 0:
+                   dp[i][j][0] = dp[i-1][j][0]
 
-def listsum(numList):
-   if len(numList) == 1:
-        return numList[0]
-   else:
-        return numList[0] + listsum(numList[1:])
+    # Заполнение dp[i][j][1]
+    for i in range(N):
+        for j in range(M):
+            if field[i][j] == '0':
+                if j > 0:
+                    dp[i][j][1] = dp[i][j-1][0]
+                else:
+                    dp[i][j][1] = 0
+            elif field[i][j] == 'A':
+                if i > 0 and j > 0:
+                    dp[i][j][1] = 1 + max(dp[i][j-1][0], dp[i-1][j][1])
+                elif i > 0:
+                    dp[i][j][1] = 1 + dp[i-1][j][1]
+                elif j > 0:
+                    dp[i][j][1] = 1 + dp[i][j-1][0]
+                else:
+                    dp[i][j][1] = 1
+            elif field[i][j] == 'B':
+                if i > 0 and j > 0:
+                    dp[i][j][1] = max(dp[i][j-1][0], dp[i-1][j][1])
+                elif i > 0:
+                    dp[i][j][1] = dp[i-1][j][1]
+                elif j > 0:
+                    dp[i][j][1] = dp[i][j-1][0]
+                else:
+                    dp[i][j][1] = 0
 
+    max_score = 0
+    for i in range(N):
+        for j in range(M):
+            max_score = max(max_score, dp[i][j][0], dp[i][j][1])
 
-def choose_nums(numbers):
-    len_nums = ceil(len(numbers) / 2)
-    nums = numbers[:len_nums]
-    other_nums = numbers[len_nums:]
+    return max_score
 
-    if listsum(nums) % 3 == 0:
-        return nums
-    remainder = listsum(nums) % 3
-    for i in range(len_nums):
-        for el in other_nums:
-            if el == nums[i] + (3 - remainder) or el == nums[i] - remainder: 
-                nums[i] = el
-                if listsum(nums) % 3 == 0:
-                    return nums
-                nums = numbers[:len_nums]
-    return nums
+# Чтение входных данных
+N, M = 3, 3
+field = [[0, "B", 0], ["B", 0, "B"], [0, "B", 0]]
+# for _ in range(N):
+#     row = input()
+#     field.append(row)
 
-
-if __name__ == "__main__":
-    nums = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-    # nums = [-5, -5, -5]
-    print(choose_nums(nums))
+# Вызов функции и вывод результата
+result = max_score(N, M, field)
+print(result)
